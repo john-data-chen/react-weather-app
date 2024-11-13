@@ -1,6 +1,5 @@
 "use client";
 import styled from "@emotion/styled";
-import LoadingIcon from "./images/loading.svg?react";
 import CloudyIcon from "./images/cloudy.svg?react";
 import SunnyIcon from "./images/sunny.svg?react";
 import RedoIcon from "./images/redo.svg?react";
@@ -57,10 +56,6 @@ const Cloudy = styled(CloudyIcon)`
   flex-basis: 30%;
 `;
 
-const Loading = styled(LoadingIcon)`
-  flex-basis: 30%;
-`;
-
 const Rain = styled.div`
   display: flex;
   align-items: center;
@@ -88,6 +83,7 @@ function App() {
   const [userLocation, setUserLocation] = useState<{
     latitude: number;
     longitude: number;
+    city: string;
   } | null>(null);
   const [weatherData, setWeatherData] = useState<{
     current: { temperature2m: number; weatherCode: number };
@@ -109,7 +105,7 @@ function App() {
       case 65:
         return <Rain />;
       default:
-        return <Loading />; // default icon
+        return;
     }
   };
 
@@ -118,11 +114,17 @@ function App() {
   const getWeather = async () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (position) => {
-        console.log("position: ", position);
         const { latitude, longitude } = position.coords;
+        const res = await fetch("https://api.ipify.org/?format=json");
+        const ipData = await res.json();
+        const ip = ipData.ip;
+        const res2 = await fetch("http://ip-api.com/json/" + ip);
+        const location = await res2.json();
+        const city = location.regionName;
         setUserLocation({
           latitude: latitude,
           longitude: longitude,
+          city: city,
         });
         const params = {
           latitude: latitude,
@@ -142,7 +144,6 @@ function App() {
           };
 
           // Update the state with the formatData
-          console.log(formatData);
           setWeatherData(formatData);
         } catch (error) {
           console.error(error);
@@ -156,9 +157,7 @@ function App() {
   return (
     <Container>
       <WeatherCard>
-        <Location>
-          {userLocation?.latitude} {userLocation?.longitude}
-        </Location>
+        <Location>{userLocation?.city}</Location>
         <CurrentWeather>
           <Temperature>
             {weatherData?.current.temperature2m} <Celsius>°C</Celsius>
