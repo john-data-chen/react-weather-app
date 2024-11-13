@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import CloudyIcon from "./images/cloudy.svg?react";
 import SunnyIcon from "./images/sunny.svg?react";
 import RedoIcon from "./images/redo.svg?react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { fetchWeatherApi } from "openmeteo";
 
 const Container = styled.div`
@@ -147,6 +147,11 @@ function App() {
       console.error(error);
     }
   };
+
+  // auto execute
+  useEffect(() => {
+    getWeather();
+  }, []);
 
   return (
     <Container>
