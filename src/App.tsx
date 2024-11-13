@@ -112,45 +112,39 @@ function App() {
   const weatherIconElement = weatherIcon();
 
   const getWeather = async () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const { latitude, longitude } = position.coords;
-        const res = await fetch("https://api.ipify.org/?format=json");
-        const ipData = await res.json();
-        const ip = ipData.ip;
-        const res2 = await fetch("http://ip-api.com/json/" + ip);
-        const location = await res2.json();
-        const city = location.regionName;
-        setUserLocation({
-          latitude: latitude,
-          longitude: longitude,
-          city: city,
-        });
-        const params = {
-          latitude: latitude,
-          longitude: longitude,
-          current: ["temperature_2m", "weather_code"],
-        };
-        const url = "https://api.open-meteo.com/v1/forecast";
-        try {
-          const responses = await fetchWeatherApi(url, params);
-          const response = responses[0];
-          const current = response.current()!;
-          const formatData = {
-            current: {
-              temperature2m: Math.trunc(current.variables(0)!.value()),
-              weatherCode: current.variables(1)!.value(),
-            },
-          };
-
-          // Update the state with the formatData
-          setWeatherData(formatData);
-        } catch (error) {
-          console.error(error);
-        }
+    try {
+      const res = await fetch("https://api.ipify.org/?format=json");
+      const ipData = await res.json();
+      const ip = ipData.ip;
+      const res2 = await fetch("http://ip-api.com/json/" + ip);
+      const location = await res2.json();
+      const city = location.regionName;
+      const latitude = location.lat;
+      const longitude = location.lon;
+      setUserLocation({
+        latitude: latitude,
+        longitude: longitude,
+        city: city,
       });
-    } else {
-      alert("Geolocation is not supported by this browser.");
+      const params = {
+        latitude: latitude,
+        longitude: longitude,
+        current: ["temperature_2m", "weather_code"],
+      };
+      const url = "https://api.open-meteo.com/v1/forecast";
+      const responses = await fetchWeatherApi(url, params);
+      const response = responses[0];
+      const current = response.current()!;
+      const formatData = {
+        current: {
+          temperature2m: Math.trunc(current.variables(0)!.value()),
+          weatherCode: current.variables(1)!.value(),
+        },
+      };
+      // Update the state with the formatData
+      setWeatherData(formatData);
+    } catch (error) {
+      console.error(error);
     }
   };
 
