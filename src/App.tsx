@@ -157,7 +157,6 @@ function App() {
           displayDegree: true,
         },
       };
-      console.log(formatData);
       // Update the state with the formatData
       setWeatherData(formatData);
       setFetching(false);
