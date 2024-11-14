@@ -70,9 +70,7 @@ const Rain = styled.div`
   }
 `;
 
-const Redo = styled(RedoIcon)`
-  width: 40px;
-  height: 40px;
+const Redo = styled.div`
   position: absolute;
   right: 15px;
   bottom: 15px;
@@ -151,6 +149,7 @@ function App() {
   // auto execute
   useEffect(() => {
     getWeather();
+    setTimeout(() => setShowUpdateTime(true), 2000);
   }, []);
 
   return (
@@ -170,7 +169,18 @@ function App() {
           </Temperature>
           {weatherIconElement}
         </CurrentWeather>
-        <Redo onClick={getWeather} />
+        <Redo>
+          <div className={showUpdateTime ? "visible" : "hidden"}>
+            update at{" "}
+            {showUpdateTime &&
+              new Date().toLocaleTimeString("en-US", {
+                hour12: false,
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+          </div>
+          <RedoIcon onClick={getWeather} />
+        </Redo>
       </WeatherCard>
     </Container>
   );
