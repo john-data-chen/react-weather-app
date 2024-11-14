@@ -74,7 +74,17 @@ const Redo = styled.div`
   position: absolute;
   right: 15px;
   bottom: 15px;
-  cursor: pointer;
+  font-size: 20px;
+  display: inline-flex;
+  align-items: flex-end;
+  color: #828282;
+
+  svg {
+    margin-left: 10px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+  }
 `;
 
 function App() {
@@ -84,8 +94,13 @@ function App() {
     city: string;
   } | null>(null);
   const [weatherData, setWeatherData] = useState<{
-    current: { temperature2m: number; weatherCode: number };
+    current: {
+      temperature2m: number;
+      weatherCode: number;
+      displayDegree: boolean;
+    };
   } | null>(null);
+  const [showUpdateTime, setShowUpdateTime] = useState(false);
 
   const weatherIcon = () => {
     switch (weatherData?.current.weatherCode) {
@@ -137,6 +152,7 @@ function App() {
         current: {
           temperature2m: Math.trunc(current.variables(0)!.value()),
           weatherCode: current.variables(1)!.value(),
+          displayDegree: true,
         },
       };
       // Update the state with the formatData
@@ -155,17 +171,19 @@ function App() {
   return (
     <Container>
       <WeatherCard>
-        <Location>
-          {userLocation?.city} updated{" "}
-          {new Date().toLocaleTimeString("en-US", {
-            hour12: false,
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </Location>
+        <Location>{userLocation?.city}</Location>
         <CurrentWeather>
           <Temperature>
-            {weatherData?.current.temperature2m} <Celsius>°C</Celsius>
+            {weatherData?.current.temperature2m}{" "}
+            <Celsius>
+              <div
+                className={
+                  weatherData?.current.displayDegree ? "visible" : "hidden"
+                }
+              >
+                °C
+              </div>
+            </Celsius>
           </Temperature>
           {weatherIconElement}
         </CurrentWeather>
