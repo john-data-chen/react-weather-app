@@ -156,7 +156,14 @@ function App() {
   return (
     <Container>
       <WeatherCard>
-        <Location>{userLocation?.city}</Location>
+        <Location>
+          {userLocation?.city} updated{" "}
+          {new Date().toLocaleTimeString("en-US", {
+            hour12: false,
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </Location>
         <CurrentWeather>
           <Temperature>
             {weatherData?.current.temperature2m} <Celsius>°C</Celsius>
