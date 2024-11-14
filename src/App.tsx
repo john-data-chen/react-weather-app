@@ -160,6 +160,7 @@ function App() {
       // Update the state with the formatData
       setWeatherData(formatData);
       setFetching(false);
+      setShowUpdateTime(true);
     } catch (error) {
       console.error(error);
     }
@@ -168,7 +169,6 @@ function App() {
   // auto execute
   useEffect(() => {
     getWeather();
-    setTimeout(() => setShowUpdateTime(true), 2000);
   }, []);
 
   return (
