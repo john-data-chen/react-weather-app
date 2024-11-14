@@ -101,6 +101,7 @@ function App() {
     };
   } | null>(null);
   const [showUpdateTime, setShowUpdateTime] = useState(false);
+  const [fetching, setFetching] = useState(false);
 
   const weatherIcon = () => {
     switch (weatherData?.current.weatherCode) {
@@ -125,6 +126,7 @@ function App() {
   const weatherIconElement = weatherIcon();
 
   const getWeather = async () => {
+    setFetching(true);
     try {
       const res = await fetch("https://api.ipify.org/?format=json");
       const ipData = await res.json();
@@ -155,8 +157,10 @@ function App() {
           displayDegree: true,
         },
       };
+      console.log(formatData);
       // Update the state with the formatData
       setWeatherData(formatData);
+      setFetching(false);
     } catch (error) {
       console.error(error);
     }
@@ -197,7 +201,10 @@ function App() {
                 minute: "2-digit",
               })}
           </div>
-          <RedoIcon onClick={getWeather} />
+          <RedoIcon
+            className={fetching ? "rotate" : "stop-rotate"}
+            onClick={getWeather}
+          />
         </Redo>
       </WeatherCard>
     </Container>
