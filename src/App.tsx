@@ -4,7 +4,7 @@ import CloudyIcon from "./images/cloudy.svg?react";
 import SunnyIcon from "./images/sunny.svg?react";
 import RainIcon from "./images/rain.svg?react";
 import RedoIcon from "./images/redo.svg?react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { fetchWeatherApi } from "openmeteo";
 
 const Container = styled.div`
@@ -117,6 +117,8 @@ function App() {
   const weatherIconElement = weatherIcon();
 
   const getWeather = async () => {
+    console.log("getWeather");
+
     setFetching(true);
     try {
       const res = await fetch("https://ipapi.co/json/");
@@ -155,9 +157,13 @@ function App() {
     }
   };
 
-  // auto execute
+  const hasRunRef = useRef(false);
+
   useEffect(() => {
-    getWeather();
+    if (!hasRunRef.current) {
+      getWeather();
+      hasRunRef.current = true;
+    }
   }, []);
 
   return (
