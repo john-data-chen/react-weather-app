@@ -128,14 +128,12 @@ function App() {
   const getWeather = async () => {
     setFetching(true);
     try {
-      const res = await fetch("https://api.ipify.org/?format=json");
-      const ipData = await res.json();
-      const ip = ipData.ip;
-      const res2 = await fetch("http://ip-api.com/json/" + ip);
-      const location = await res2.json();
-      const city = location.regionName;
-      const latitude = location.lat;
-      const longitude = location.lon;
+      const res = await fetch("https://ipapi.co/json/");
+      const data = await res.text();
+      const jsonData = JSON.parse(data);
+      const city = jsonData.city;
+      const latitude = jsonData.latitude;
+      const longitude = jsonData.longitude;
       setUserLocation({
         latitude: latitude,
         longitude: longitude,
