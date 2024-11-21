@@ -1,6 +1,6 @@
 # React + TypeScript + Vite: A weather APP
 
-Get your IP address and get the weather of your location
+Get your IP address and get the weather of your location, you can see the [demo](https://john-data-chen.github.io/react-weather-app/) here
 
 ## How to use it
 
