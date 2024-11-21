@@ -2,6 +2,7 @@
 import styled from "@emotion/styled";
 import CloudyIcon from "./images/cloudy.svg?react";
 import SunnyIcon from "./images/sunny.svg?react";
+import RainIcon from "./images/rain.svg?react";
 import RedoIcon from "./images/redo.svg?react";
 import { useState, useEffect } from "react";
 import { fetchWeatherApi } from "openmeteo";
@@ -56,18 +57,8 @@ const Cloudy = styled(CloudyIcon)`
   flex-basis: 30%;
 `;
 
-const Rain = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 16x;
-  font-weight: 300;
-  color: #828282;
-
-  svg {
-    width: 25px;
-    height: auto;
-    margin-right: 30px;
-  }
+const Rain = styled(RainIcon)`
+  flex-basis: 30%;
 `;
 
 const Redo = styled.div`
