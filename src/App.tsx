@@ -117,8 +117,6 @@ function App() {
   const weatherIconElement = weatherIcon();
 
   const getWeather = async () => {
-    console.log("getWeather");
-
     setFetching(true);
     try {
       const res = await fetch("https://ipapi.co/json/");
